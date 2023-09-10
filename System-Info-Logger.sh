@@ -34,8 +34,15 @@ OS(){
     OS_NAME=`hostnamectl | grep "Operating System" | cut -d" " -f 3`
     OS_VERSION=`hostnamectl | grep "Operating System" | cut -d" " -f 4`
 
-    echo "OS NAME: ${OS_NAME}"
-    echo -e "OS VERSION: ${OS_VERSION}\n"
+    echo "OS Name: ${OS_NAME}"
+    echo -e "OS Version: ${OS_VERSION}\n"
+}
+
+#IP_ADDRESS: Displays IP address
+IP_ADDRESS(){
+    IP=`hostname -I`
+
+    echo -e "IP Address: ${IP}\n"
 }
 
 #Wrapper Function to call other functions To Display Informations
@@ -43,6 +50,7 @@ DISPLAY(){
     RAM
     STORAGE
     OS
+    IP_ADDRESS
 }
 
 DISPLAY
