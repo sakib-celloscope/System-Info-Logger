@@ -12,6 +12,10 @@ CURRENT_DATE=`date +%F`
 #Checking Current Time
 CURRENT_TIME=`date +%T`
 
+LOG_FILE="Log-${CURRENT_DATE}.log"
+
+echo "LOG FILE: ${LOG_FILE}"
+
 echo -e "Script Executed at ${CURRENT_TIME}\n"
 
 
@@ -25,9 +29,9 @@ RAM(){
     USED_RAM_SPACE=`free -mt | grep "Total" | awk '{print $3}'`
 
 
-    echo "Total Ram Size: ${TOTAL_RAM} MB" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
-    echo "Total Free Space: ${FREE_RAM_SPACE} MB" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
-    echo -e "Total Used Space: ${USED_RAM_SPACE} MB\n" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    echo "Total Ram Size: ${TOTAL_RAM} MB"
+    echo "Total Free Space: ${FREE_RAM_SPACE} MB"
+    echo -e "Total Used Space: ${USED_RAM_SPACE} MB\n"
 }
 
 #STORAGE: Displays information of Storage
@@ -36,9 +40,9 @@ STORAGE(){
     AVAILABLE_STORAGE_SPACE=`df -mT | grep "ext4" | awk '{print $5}'`
     USED_STORAGE_SPACE=`df -mT | grep "ext4" | awk '{print $4}'`
 
-    echo "Total Storage Size: ${TOTAL_STORAGE_SPACE} MB" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
-    echo "Total Available Storage: ${AVAILABLE_STORAGE_SPACE} MB" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
-    echo -e "Total Used Storage: ${USED_STORAGE_SPACE} MB\n" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    echo "Total Storage Size: ${TOTAL_STORAGE_SPACE} MB"
+    echo "Total Available Storage: ${AVAILABLE_STORAGE_SPACE} MB"
+    echo -e "Total Used Storage: ${USED_STORAGE_SPACE} MB\n"
 }
 
 #OS: Displays information of OS and it's version
@@ -46,26 +50,32 @@ OS(){
     OS_NAME=`hostnamectl | grep "Operating System" | cut -d" " -f 3`
     OS_VERSION=`hostnamectl | grep "Operating System" | cut -d" " -f 4`
 
-    echo "OS Name: ${OS_NAME}" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
-    echo -e "OS Version: ${OS_VERSION}\n" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    echo "OS Name: ${OS_NAME}"
+    echo -e "OS Version: ${OS_VERSION}\n"
 }
 
 #IP_ADDRESS: Displays IP address
 IP_ADDRESS(){
     IP=`hostname -I`
 
-    echo -e "IP Address: ${IP}\n" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    echo -e "IP Address: ${IP}\n"
 }
 
 
 #Wrapper Function to call other functions To Display Informations
 DISPLAY(){
-    RAM
-    STORAGE
-    OS
-    IP_ADDRESS
+    RAM >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    STORAGE >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    OS >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
+    IP_ADDRESS >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
 }
 
 DISPLAY
+
+SEND_MAIL(){
+    echo "Here is the system info log file which is generated at ${CURRENT_TIME}. Thank you." | mail -s "System Info Log Update" - a "${LOG_FILE}" abdullahnazmussakib@gmail.com
+}
+
+SEND_MAIL
 
 echo "==========================================" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
