@@ -29,7 +29,20 @@ STORAGE(){
     echo -e "Total Used Storage: ${USED_STORAGE_SPACE} MB\n"
 }
 
-#Calling Functions To Display Informations
-RAM
-STORAGE
+#OS: Displays information of OS and it's version
+OS(){
+    OS_NAME=`hostnamectl | grep "Operating System" | cut -d" " -f 3`
+    OS_VERSION=`hostnamectl | grep "Operating System" | cut -d" " -f 4`
 
+    echo "OS NAME: ${OS_NAME}"
+    echo -e "OS VERSION: ${OS_VERSION}\n"
+}
+
+#Wrapper Function to call other functions To Display Informations
+DISPLAY(){
+    RAM
+    STORAGE
+    OS
+}
+
+DISPLAY
