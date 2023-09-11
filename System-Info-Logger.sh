@@ -112,6 +112,6 @@ SEND_MAIL(){
     echo "Here is the system info log file which is generated at ${CURRENT_TIME}. Thank you." | mail -s "System Info Log Update" -A "$LOG_FILE.log" abdullahnazmussakib@gmail.com
 }
 
-#SEND_MAIL 
+SEND_MAIL 
 
 echo "=====================================================================" >> ${CURRENT_DIRECTORY}/Log-${CURRENT_DATE}.log
